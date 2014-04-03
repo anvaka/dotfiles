@@ -44,9 +44,6 @@ NeoBundle "scrooloose/nerdtree"
 nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
 NeoBundle 'bling/vim-airline' "{{{
   let g:airline_theme = 'powerlineish'
-  let g:airline#extensions#tabline#enabled = 1
-  let g:airline#extensions#tabline#left_sep=' '
-  let g:airline#extensions#tabline#left_alt_sep='¦'
 "}}}
 
 " repeat.vim: enable repeating supported plugin maps with "."
