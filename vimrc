@@ -8,13 +8,11 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-" This makes vim act like all other editors, buffers can
-" exist in the background without being in a window.
-" http://items.sjbach.com/319/configuring-vim-right
-set hidden
-
-"turn on syntax highlighting
-syntax on
+set hidden         "allow buffer switching without saving
+syntax on          "turn on syntax highlighting
+set history=1000   "number of command lines to remember
+set list           "highlight whitespace
+set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
 
 " Always unfold
 set foldlevel=99
@@ -23,9 +21,11 @@ set colorcolumn=80
 set clipboard=unnamed
 
 set showcmd
+set cursorline
+
 " Change leader to a comma because the backslash is too far away
 " That means all \x commands turn into ,x
-" The mapleader has to be set before vundle starts loading all 
+" The mapleader has to be set before vundle starts loading all
 " the plugins.
 let mapleader=","
 
@@ -33,24 +33,37 @@ let mapleader=","
 NeoBundleFetch 'Shougo/neobundle.vim'
 " Load all plugins
 let g:ctrlp_max_files=0
+NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
 NeoBundle "tomasr/molokai"
-NeoBundle "chriskempson/tomorrow-theme", {'rtp': 'vim/'}
 
 NeoBundle "scrooloose/nerdtree"
 " Open the project tree and expose current file in the nerdtree with Ctrl-\
 nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
 NeoBundle 'bling/vim-airline' "{{{
   let g:airline_theme = 'powerlineish'
+  let g:airline_left_sep = '⧽'
+  let g:airline_right_sep = '᚜'
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#left_sep=' '
+  let g:airline#extensions#tabline#left_alt_sep='¦'
 "}}}
 
 " repeat.vim: enable repeating supported plugin maps with "."
 " http://www.vim.org/scripts/script.php?script_id=2136
-NeoBundle "tpope/vim-repeat"
 NeoBundle "tpope/vim-surround"
+NeoBundle "tpope/vim-repeat"
+NeoBundle "tpope/vim-dispatch"
+NeoBundle "tpope/vim-unimpaired"
 NeoBundle "tpope/vim-fugitive"
+NeoBundle "jtratner/vim-flavored-markdown"
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END 
+
 NeoBundle "scrooloose/syntastic"
 NeoBundle "pangloss/vim-javascript"
 NeoBundle "maksimr/vim-jsbeautify"
@@ -123,6 +136,10 @@ NeoBundle 'Shougo/unite.vim' "{{{
     nnoremap <silent> [unite]j :<C-u>Unite -auto-resize -buffer-name=junk junkfile junkfile/new<cr>
   "}}}
 
+NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGoldenViewAutoResize']}} "{{{
+  let g:goldenview__enable_default_mapping=0
+  nmap <F4> <Plug>ToggleGoldenViewAutoResize
+"}}}
 "NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
 "  function! s:zen_html_tab()
 "    let line = getline('.')
@@ -159,8 +176,14 @@ NeoBundle "thinca/vim-quickrun"
 NeoBundle "terryma/vim-multiple-cursors"
 
 " A Vim plugin which shows a git diff in the gutter (sign column).
-NeoBundle "airblade/vim-gitgutter" 
-
+NeoBundle "airblade/vim-gitgutter"
+NeoBundle 'bufkill.vim'
+NeoBundleLazy 'EasyGrep', {'autoload':{'commands':'GrepOptions'}} "{{{
+  let g:EasyGrepRecursive=1
+  let g:EasyGrepAllOptionsInExplorer=1
+  let g:EasyGrepCommand=1
+  nnoremap <leader>vo :GrepOptions<cr>
+"}}}
 
 let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
 let g:syntastic_javascript_checkers = ['jshint']
@@ -203,6 +226,9 @@ filetype indent on
 
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
+set shiftround
+set linebreak
+let &showbreak='↪ '
 
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
@@ -230,7 +256,7 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Scrolling ========================
 
-set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set scrolloff=1         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
@@ -319,7 +345,7 @@ function! s:appendSemiColon()
   endif
 endfunction
 
-" Use Q to intelligently close a window 
+" Use Q to intelligently close a window
 " (if there are multiple windows into the same buffer)
 " or kill the buffer entirely if it's the last window looking into that buffer
 function! CloseWindowOrKillBuffer()
@@ -339,16 +365,6 @@ function! CloseWindowOrKillBuffer()
 endfunction
 
 nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
-
-" Copy all matches from previous search
-function! CopyMatches(reg)
-  let hits = []
-  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/ge
-  let reg = empty(a:reg) ? '+' : a:reg
-  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
-endfunction
-
-command! -register CopyMatches call CopyMatches(<q-reg>)
 
 " via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
 " Strip trailing whitespace
@@ -379,3 +395,35 @@ autocmd FileType javascript inoremap {<CR> {<CR>}<C-o>O
 " toggle paste
 map <F6> :set invpaste<CR>:set paste?<CR>
 imap <F6> <C-O>:set paste<CR>
+  " remap arrow keys
+nnoremap <left> :bprev<CR>
+nnoremap <right> :bnext<CR>
+nnoremap <up> :tabnext<CR>
+nnoremap <down> :tabprev<CR>
+
+" change cursor position in insert mode
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OpenChangedFiles COMMAND
+" Open a split for each dirty file in git
+"
+" Shamelessly stolen from Gary Bernhardt: https://github.com/garybernhardt/dotfiles
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! OpenChangedFiles()
+  only " Close all windows, unless they're modified
+  let status = system('git status -s | grep "^ \?\(M\|A\)" | cut -d " " -f 3')
+  let filenames = split(status, "\n")
+  if len(filenames) > 0
+    exec "edit " . filenames[0]
+    for filename in filenames[1:]
+      exec "sp " . filename
+    endfor
+  end
+endfunction
+command! OpenChangedFiles :call OpenChangedFiles()
+
+nnoremap <leader>ocf :OpenChangedFiles<CR>
+
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
