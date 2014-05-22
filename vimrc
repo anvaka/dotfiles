@@ -66,7 +66,6 @@ augroup END
 
 NeoBundle "scrooloose/syntastic"
 NeoBundle "pangloss/vim-javascript"
-NeoBundle "maksimr/vim-jsbeautify"
 NeoBundle "Raimondi/delimitMate"
 NeoBundle "kana/vim-textobj-user"
 NeoBundle "kana/vim-textobj-function"
