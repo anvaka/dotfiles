@@ -152,6 +152,7 @@ NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGo
 ""}}}
 
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'nelstrom/vim-visual-star-search'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neosnippet.vim' "{{{
   let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
