@@ -1,4 +1,5 @@
 set nocompatible               " Be iMproved
+set autoread                   " auto reload if file saved externally
 
 set backspace=indent,eol,start
 
@@ -13,9 +14,6 @@ syntax on          "turn on syntax highlighting
 set history=1000   "number of command lines to remember
 set list           "highlight whitespace
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
-
-set completeopt-=preview "don't need this extra window
-
 
 " Always unfold
 set foldlevel=99
@@ -49,9 +47,9 @@ NeoBundle 'bling/vim-airline' "{{{
   let g:airline_theme = 'powerlineish'
   let g:airline_left_sep = '⧽'
   let g:airline_right_sep = '᚜'
-  let g:airline#extensions#tabline#enabled = 1
-  let g:airline#extensions#tabline#left_sep=' '
-  let g:airline#extensions#tabline#left_alt_sep='¦'
+"  let g:airline#extensions#tabline#enabled = 1
+"  let g:airline#extensions#tabline#left_sep=' '
+"  let g:airline#extensions#tabline#left_alt_sep='¦'
 "}}}
 
 " repeat.vim: enable repeating supported plugin maps with "."
@@ -67,6 +65,30 @@ augroup markdown
     au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 augroup END 
 
+NeoBundleLazy 'marijnh/tern_for_vim', {
+    \ 'autoload': { 'filetypes': ['javascript'] },
+    \ 'build': {
+      \ 'mac': 'npm install',
+      \ 'unix': 'npm install',
+      \ 'cygwin': 'npm install',
+      \ 'windows': 'npm install',
+    \ },
+  \ }
+let g:tern_show_signature_in_pum = 1
+set completeopt-=preview
+
+NeoBundle 'gcmt/wildfire.vim' "{{{
+" This selects the next closest text object.
+let g:wildfire_fuel_map = ",<ENTER>"
+" This selects the previous closest text object.
+let g:wildfire_water_map = ",<BS>"
+" use '*' to mean 'all other filetypes'
+" in this example, html and xml share the same text objects
+let g:wildfire_objects = {
+    \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
+    \ "html,xml" : ["at"],
+\ }
+"}}}
 NeoBundle "scrooloose/syntastic"
 NeoBundle "pangloss/vim-javascript"
 NeoBundle "Raimondi/delimitMate"
@@ -142,17 +164,10 @@ NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGo
   let g:goldenview__enable_default_mapping=0
   nmap <F4> <Plug>ToggleGoldenViewAutoResize
 "}}}
-"NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
-"  function! s:zen_html_tab()
-"    let line = getline('.')
-"    if match(line, '<.*>') < 0
-"      return "\<c-y>,"
-"    endif
-"    return "\<c-y>n"
-"  endfunction
-"  autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
-"  autocmd FileType html imap <buffer><expr><tab> <sid>zen_html_tab()
-""}}}
+"
+NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
+  autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
+"}}}
 
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'nelstrom/vim-visual-star-search'
@@ -428,5 +443,11 @@ endfunction
 command! OpenChangedFiles :call OpenChangedFiles()
 
 nnoremap <leader>ocf :OpenChangedFiles<CR>
+
+function! Slide(num)
+  call system('git checkout -- .')
+  call system('git checkout Slide_'.a:num)
+  exec "e!"
+endfunction
 
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
