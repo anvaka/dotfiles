@@ -14,6 +14,9 @@ set history=1000   "number of command lines to remember
 set list           "highlight whitespace
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
 
+set completeopt-=preview "don't need this extra window
+
+
 " Always unfold
 set foldlevel=99
 set colorcolumn=80
