@@ -181,17 +181,30 @@ NeoBundle 'Shougo/neosnippet.vim' "{{{
   imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
   smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
 "}}}
+"
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'} "{{{
   let g:neocomplete#enable_at_startup=1
   let g:neocomplete#data_directory='~/.vim/.cache/neocomplete'
 "}}}
+
+" True Sublime Text style multiple selections for Vim
+NeoBundle "kris89/vim-multiple-cursors" "{{{
+  " Fix multiple cursors with neocomplete
+  function! Multiple_cursors_before()
+      exe 'NeoCompleteLock'
+      echo 'Disabled autocomplete'
+  endfunction
+
+  function! Multiple_cursors_after()
+      exe 'NeoCompleteUnlock'
+      echo 'Enabled autocomplete'
+  endfunction
+"}}}
+
 NeoBundle "kshenoy/vim-signature"
 NeoBundle "rking/ag.vim"
 " Run commands quickly. <Leader>r
 NeoBundle "thinca/vim-quickrun"
-
-" True Sublime Text style multiple selections for Vim
-NeoBundle "terryma/vim-multiple-cursors"
 
 " A Vim plugin which shows a git diff in the gutter (sign column).
 NeoBundle "airblade/vim-gitgutter"
@@ -362,6 +375,7 @@ function! s:appendSemiColon()
     call setpos('.', original_cursor_position)
   endif
 endfunction
+
 
 " Use Q to intelligently close a window
 " (if there are multiple windows into the same buffer)
