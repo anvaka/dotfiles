@@ -102,6 +102,10 @@ NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
 NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
 
+NeoBundle 'maksimr/vim-jsbeautify'
+NeoBundle 'einars/js-beautify'
+map <c-f> :call JsBeautify()<cr>
+
 NeoBundle "Shougo/vimproc.vim"
 NeoBundle 'Shougo/unite.vim' "{{{
   let bundle = neobundle#get('unite.vim')
@@ -182,7 +186,7 @@ NeoBundle 'Shougo/neosnippet.vim' "{{{
   smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
 "}}}
 "
-NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'} "{{{
+NeoBundle 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'} "{{{
   let g:neocomplete#enable_at_startup=1
   let g:neocomplete#data_directory='~/.vim/.cache/neocomplete'
 "}}}
