@@ -402,6 +402,9 @@ endfunction
 
 nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
 
+" Kill current buffer without closing split
+nnoremap <silent> ,q :bn \| bd #<CR>
+
 " via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
 " Strip trailing whitespace
 function! <SID>StripTrailingWhitespaces()
