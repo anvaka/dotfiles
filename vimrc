@@ -465,6 +465,9 @@ command! OpenChangedFiles :call OpenChangedFiles()
 
 nnoremap <leader>ocf :OpenChangedFiles<CR>
 
+" Search and replace the word under the cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
 function! Slide(num)
   call system('git checkout -- .')
   call system('git checkout Slide_'.a:num)
