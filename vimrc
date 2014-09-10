@@ -34,6 +34,8 @@ let mapleader=","
 NeoBundleFetch 'Shougo/neobundle.vim'
 " Load all plugins
 let g:ctrlp_max_files=0
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0
 NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
@@ -80,6 +82,7 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
   \ }
 
 autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
+autocmd FileType javascript map <buffer> tr :TernRename<CR>
 let g:tern_show_signature_in_pum = 1
 set completeopt-=preview
 
@@ -115,19 +118,17 @@ NeoBundle "Shougo/vimproc.vim"
 NeoBundle 'Shougo/unite.vim' "{{{
   let bundle = neobundle#get('unite.vim')
   function! bundle.hooks.on_source(bundle)
-    call unite#filters#matcher_default#use(['matcher_fuzzy'])
+    "call unite#filters#matcher_default#use(['matcher_fuzzy'])
     call unite#filters#sorter_default#use(['sorter_rank'])
     call unite#set_profile('files', 'smartcase', 1)
-    call unite#custom#source('line,outline','matchers','matcher_fuzzy')
-    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer', 'max_candidates', '20')
-    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-      \ 'ignore_pattern', join([
-      \ '\.git/',
-      \ 'node_modules',
-      \ 'bower_components',
-      \ 'dist',
-      \ 'coverage',
-      \ ], '\|'))
+"    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+"      \ 'ignore_pattern', join([
+"      \ '\.git/',
+"      \ 'node_modules',
+"      \ 'bower_components',
+"      \ 'dist',
+"      \ 'coverage',
+"      \ ], '\|'))
   endfunction
 
   let g:unite_data_directory='~/.vim/.cache/unite'
@@ -150,7 +151,7 @@ NeoBundle 'Shougo/unite.vim' "{{{
   nmap <space> [unite]
   nnoremap [unite] <nop>
 
-  nnoremap <silent> [unite]<space> :<C-u>Unite -start-insert -auto-resize file file_rec/async file_mru<CR>
+  nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
   nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
   nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
