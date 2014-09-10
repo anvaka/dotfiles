@@ -33,15 +33,18 @@ let mapleader=","
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 " Load all plugins
-let g:ctrlp_max_files=0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_use_caching = 0
 NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
+
+let g:ctrlp_max_files=0
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0
+
+nnoremap <space><space> :CtrlPBuffer<CR>
 
 NeoBundle "scrooloose/nerdtree"
 " Open the project tree and expose current file in the nerdtree with Ctrl-\
@@ -151,7 +154,7 @@ NeoBundle 'Shougo/unite.vim' "{{{
   nmap <space> [unite]
   nnoremap [unite] <nop>
 
-  nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+" nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
   nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
   nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
