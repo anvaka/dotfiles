@@ -39,14 +39,18 @@ NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
 NeoBundle "tomasr/molokai"
+NeoBundle "altercation/vim-colors-solarized"
 
 NeoBundle "scrooloose/nerdtree"
 " Open the project tree and expose current file in the nerdtree with Ctrl-\
 nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
 NeoBundle 'bling/vim-airline' "{{{
-  let g:airline_theme = 'powerlineish'
-  let g:airline_left_sep = '⧽'
-  let g:airline_right_sep = '᚜'
+  let g:airline_theme = 'solarized'
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 0
+  let g:airline#extensions#tabline#left_sep=' '
+  let g:airline#extensions#tabline#left_alt_sep='¦'
+  let g:airline#extensions#tabline#buffer_nr_show = 1
 "  let g:airline#extensions#tabline#enabled = 1
 "  let g:airline#extensions#tabline#left_sep=' '
 "  let g:airline#extensions#tabline#left_alt_sep='¦'
@@ -63,7 +67,7 @@ NeoBundle "jtratner/vim-flavored-markdown"
 augroup markdown
     au!
     au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
-augroup END 
+augroup END
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
     \ 'autoload': { 'filetypes': ['javascript'] },
@@ -74,6 +78,8 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'windows': 'npm install',
     \ },
   \ }
+
+autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
 let g:tern_show_signature_in_pum = 1
 set completeopt-=preview
 
@@ -104,7 +110,6 @@ NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass',
 
 NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'einars/js-beautify'
-map <c-f> :call JsBeautify()<cr>
 
 NeoBundle "Shougo/vimproc.vim"
 NeoBundle 'Shougo/unite.vim' "{{{
@@ -114,6 +119,15 @@ NeoBundle 'Shougo/unite.vim' "{{{
     call unite#filters#sorter_default#use(['sorter_rank'])
     call unite#set_profile('files', 'smartcase', 1)
     call unite#custom#source('line,outline','matchers','matcher_fuzzy')
+    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer', 'max_candidates', '20')
+    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'dist',
+      \ 'coverage',
+      \ ], '\|'))
   endfunction
 
   let g:unite_data_directory='~/.vim/.cache/unite'
@@ -136,7 +150,7 @@ NeoBundle 'Shougo/unite.vim' "{{{
   nmap <space> [unite]
   nnoremap [unite] <nop>
 
-  nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+  nnoremap <silent> [unite]<space> :<C-u>Unite -start-insert -auto-resize file file_rec/async file_mru<CR>
   nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
   nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
@@ -299,9 +313,16 @@ set sidescroll=1
 set laststatus=2   " Always show the statusline
 set t_ut=          " disable backgroun color erase, play nicely with tmux
 set t_Co=256       " 256 colors terminal
+
+set encoding=utf-8
+set term=xterm-256color
+set termencoding=utf-8
 set number
 set ttimeoutlen=50  " Reduce annoying delay for key codes, especially <Esc>..."
-colo molokai
+
+let g:solarized_termcolors=256
+" set background=light
+colorscheme solarized
 
 " if exists('$TMUX')
 "   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -425,6 +446,7 @@ nmap ,w :StripTrailingWhitespaces<CR>
 " For programming languages using a semi colon at the end of statement.
 autocmd FileType c,cpp,css,java,javascript,perl,php,jade,mason nmap <silent> <leader>; :call <SID>appendSemiColon()<CR>
 autocmd FileType c,cpp,css,java,javascript,perl,php,jade,mason inoremap <silent> <leader>; <ESC>:call <SID>appendSemiColon()<CR>
+autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
 
 " If nerd tree is the last window - quit
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -434,7 +456,8 @@ autocmd FileType javascript inoremap {<CR> {<CR>}<C-o>O
 " toggle paste
 map <F6> :set invpaste<CR>:set paste?<CR>
 imap <F6> <C-O>:set paste<CR>
-  " remap arrow keys
+
+" remap arrow keys
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
