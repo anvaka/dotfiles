@@ -37,6 +37,8 @@ NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
+NeoBundle "junegunn/goyo.vim"
+
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
 
@@ -56,9 +58,6 @@ NeoBundle 'bling/vim-airline' "{{{
   let g:airline#extensions#tabline#left_sep=' '
   let g:airline#extensions#tabline#left_alt_sep='¦'
   let g:airline#extensions#tabline#buffer_nr_show = 1
-"  let g:airline#extensions#tabline#enabled = 1
-"  let g:airline#extensions#tabline#left_sep=' '
-"  let g:airline#extensions#tabline#left_alt_sep='¦'
 "}}}
 
 " repeat.vim: enable repeating supported plugin maps with "."
@@ -124,14 +123,6 @@ NeoBundle 'Shougo/unite.vim' "{{{
     "call unite#filters#matcher_default#use(['matcher_fuzzy'])
     call unite#filters#sorter_default#use(['sorter_rank'])
     call unite#set_profile('files', 'smartcase', 1)
-"    call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-"      \ 'ignore_pattern', join([
-"      \ '\.git/',
-"      \ 'node_modules',
-"      \ 'bower_components',
-"      \ 'dist',
-"      \ 'coverage',
-"      \ ], '\|'))
   endfunction
 
   let g:unite_data_directory='~/.vim/.cache/unite'
@@ -325,13 +316,9 @@ set number
 set ttimeoutlen=50  " Reduce annoying delay for key codes, especially <Esc>..."
 
 let g:solarized_termcolors=256
-" set background=light
+set background=dark
 colorscheme solarized
 
-" if exists('$TMUX')
-"   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-"   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-" endif
 " ================ Search Settings  =================
 
 set incsearch       " Find the next match as we type the search
@@ -346,8 +333,6 @@ set smartcase       " ...unless we type a capital
 inoremap jk <Esc>
 inoremap JK <Esc>
 inoremap Jk <Esc>
-inoremap jK <Esc>
-
 "make Y consistent with C and D
 nnoremap Y y$
 
@@ -394,17 +379,6 @@ NeoBundleCheck
 nnoremap <unique> <CR> :w<CR>
 
 " Nice YADR functions
-" ----- Auto semicolon ---------
-
-" If there isn't one, append a semi colon to the end of the current line.
-function! s:appendSemiColon()
-  if getline('.') !~ ';$'
-    let original_cursor_position = getpos('.')
-    exec("s/$/;/")
-    call setpos('.', original_cursor_position)
-  endif
-endfunction
-
 
 " Use Q to intelligently close a window
 " (if there are multiple windows into the same buffer)
@@ -448,8 +422,6 @@ command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap ,w :StripTrailingWhitespaces<CR>
 
 " For programming languages using a semi colon at the end of statement.
-autocmd FileType c,cpp,css,java,javascript,perl,php,jade,mason nmap <silent> <leader>; :call <SID>appendSemiColon()<CR>
-autocmd FileType c,cpp,css,java,javascript,perl,php,jade,mason inoremap <silent> <leader>; <ESC>:call <SID>appendSemiColon()<CR>
 autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
 
 " If nerd tree is the last window - quit
@@ -470,27 +442,6 @@ nnoremap <down> :tabprev<CR>
 " change cursor position in insert mode
 inoremap <C-h> <left>
 inoremap <C-l> <right>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" OpenChangedFiles COMMAND
-" Open a split for each dirty file in git
-"
-" Shamelessly stolen from Gary Bernhardt: https://github.com/garybernhardt/dotfiles
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! OpenChangedFiles()
-  only " Close all windows, unless they're modified
-  let status = system('git status -s | grep "^ \?\(M\|A\)" | cut -d " " -f 3')
-  let filenames = split(status, "\n")
-  if len(filenames) > 0
-    exec "edit " . filenames[0]
-    for filename in filenames[1:]
-      exec "sp " . filename
-    endfor
-  end
-endfunction
-command! OpenChangedFiles :call OpenChangedFiles()
-
-nnoremap <leader>ocf :OpenChangedFiles<CR>
 
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
