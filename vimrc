@@ -318,6 +318,7 @@ set ttimeoutlen=50  " Reduce annoying delay for key codes, especially <Esc>..."
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
+hi! Visual ctermfg=White ctermbg=125 term=none cterm=none
 
 " ================ Search Settings  =================
 
