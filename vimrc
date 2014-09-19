@@ -37,7 +37,6 @@ NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
-NeoBundle "junegunn/goyo.vim"
 
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
@@ -443,6 +442,12 @@ nnoremap <down> :tabprev<CR>
 " change cursor position in insert mode
 inoremap <C-h> <left>
 inoremap <C-l> <right>
+
+function! ExtractJSFunction()
+ exe "normal! \"myiwo\<CR>function \<C-R>\m() {\<CR>}\<ESC>O"
+endfunction
+command! ExtractJSFunction :call ExtractJSFunction()
+nnoremap <C-X>f :ExtractJSFunction<CR>
 
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
