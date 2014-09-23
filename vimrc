@@ -107,6 +107,7 @@ NeoBundle "kana/vim-textobj-function"
 NeoBundle "kana/vim-textobj-entire"
 NeoBundle "kana/vim-textobj-line"
 NeoBundle "thinca/vim-textobj-function-javascript"
+NeoBundle "moll/vim-node"
 
 NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
@@ -120,8 +121,8 @@ NeoBundle 'Shougo/unite.vim' "{{{
   let bundle = neobundle#get('unite.vim')
   function! bundle.hooks.on_source(bundle)
     "call unite#filters#matcher_default#use(['matcher_fuzzy'])
-    call unite#filters#sorter_default#use(['sorter_rank'])
-    call unite#set_profile('files', 'smartcase', 1)
+    "call unite#filters#sorter_default#use(['sorter_rank'])
+    call unite#custom#profile('files', 'filters', 'sorter_rank')
   endfunction
 
   let g:unite_data_directory='~/.vim/.cache/unite'
@@ -423,6 +424,10 @@ nmap ,w :StripTrailingWhitespaces<CR>
 
 " For programming languages using a semi colon at the end of statement.
 autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 " If nerd tree is the last window - quit
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
