@@ -457,6 +457,9 @@ nnoremap <C-X>f :ExtractJSFunction<CR>
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
+" Open current file with ,o
+nnoremap <Leader>o :!open %\<CR>\<CR>
+
 function! Slide(num)
   call system('git checkout -- .')
   call system('git checkout Slide_'.a:num)
