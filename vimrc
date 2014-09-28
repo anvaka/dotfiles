@@ -458,7 +458,7 @@ nnoremap <C-X>f :ExtractJSFunction<CR>
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 " Open current file with ,o
-nnoremap <Leader>o :!open %\<CR>\<CR>
+nnoremap <Leader>o :!open '%'\<CR>\<CR>
 
 function! Slide(num)
   call system('git checkout -- .')
