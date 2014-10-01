@@ -87,18 +87,6 @@ autocmd FileType javascript map <buffer> tr :TernRename<CR>
 let g:tern_show_signature_in_pum = 1
 set completeopt-=preview
 
-NeoBundle 'gcmt/wildfire.vim' "{{{
-" This selects the next closest text object.
-let g:wildfire_fuel_map = ",<ENTER>"
-" This selects the previous closest text object.
-let g:wildfire_water_map = ",<BS>"
-" use '*' to mean 'all other filetypes'
-" in this example, html and xml share the same text objects
-let g:wildfire_objects = {
-    \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
-    \ "html,xml" : ["at"],
-\ }
-"}}}
 NeoBundle "scrooloose/syntastic"
 NeoBundle "pangloss/vim-javascript"
 NeoBundle "Raimondi/delimitMate"
@@ -168,16 +156,7 @@ NeoBundle 'Shougo/unite.vim' "{{{
   NeoBundleLazy 'Shougo/unite-help', {'autoload':{'unite_sources':'help'}} "{{{
     nnoremap <silent> [unite]h :<C-u>Unite -auto-resize -buffer-name=help help<cr>
   "}}}
-  NeoBundleLazy 'Shougo/junkfile.vim', {'autoload':{'commands':'JunkfileOpen','unite_sources':['junkfile','junkfile/new']}} "{{{
-    let g:junkfile#directory=expand("~/.vim/.cache/junk")
-    nnoremap <silent> [unite]j :<C-u>Unite -auto-resize -buffer-name=junk junkfile junkfile/new<cr>
-  "}}}
 
-NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGoldenViewAutoResize']}} "{{{
-  let g:goldenview__enable_default_mapping=0
-  nmap <F4> <Plug>ToggleGoldenViewAutoResize
-"}}}
-"
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
   autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
 "}}}
@@ -462,7 +441,7 @@ nnoremap <Leader>o :!open '%'\<CR>\<CR>
 
 function! Slide(num)
   call system('git checkout -- .')
-  call system('git checkout Slide_'.a:num)
+  call system('git checkout slide'.a:num)
   exec "e!"
 endfunction
 
