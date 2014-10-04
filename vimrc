@@ -158,26 +158,44 @@ NeoBundle 'Shougo/unite.vim' "{{{
   "}}}
 
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
-  autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
+   autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><cr> <c-y>,
 "}}}
 
-NeoBundle 'honza/vim-snippets'
 NeoBundle 'nelstrom/vim-visual-star-search'
-NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'anvaka/snip5'
 NeoBundle 'Shougo/neosnippet.vim' "{{{
-  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
-  let g:neosnippet#enable_snipmate_compatibility=1
+  let g:neosnippet#disable_runtime_snippets = {
+  \   '_' : 1,
+  \ }
+  " Plugin key-mappings.
+  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k>     <Plug>(neosnippet_expand_target)
+  xmap <C-l>     <Plug>(neosnippet_start_unite_snippet_target)
 
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "\<TAB>")
-  smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-  imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
-  smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+  " Enable snipMate compatibility feature.
+  let g:neosnippet#snippets_directory='~/.vim/bundle/snip5/snippets'
+  let g:neosnippet#enable_snipmate_compatibility=1
+  " SuperTab like snippets' behavior.
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+   \ "\<Plug>(neosnippet_expand_or_jump)"
+   \: pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+   \ "\<Plug>(neosnippet_expand_or_jump)"
+   \: "\<TAB>"
+
+  " For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=i
+  endif
 "}}}
-"
+
 NeoBundle 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'} "{{{
   let g:neocomplete#enable_at_startup=1
   let g:neocomplete#data_directory='~/.vim/.cache/neocomplete'
 "}}}
+
+NeoBundle 'Shougo/context_filetype.vim'
 
 " True Sublime Text style multiple selections for Vim
 NeoBundle "kris89/vim-multiple-cursors" "{{{
@@ -446,3 +464,4 @@ function! Slide(num)
 endfunction
 
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+map <F8> :so $MYVIMRC<CR>
