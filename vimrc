@@ -37,6 +37,7 @@ NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "kien/ctrlp.vim"
+NeoBundle "fisadev/vim-ctrlp-cmdpalette"
 
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
@@ -47,6 +48,7 @@ let g:ctrlp_use_caching = 0
 
 nnoremap <space><space> :CtrlPBuffer<CR>
 
+NeoBundle "tomtom/tcomment_vim"
 NeoBundle "scrooloose/nerdtree"
 " Open the project tree and expose current file in the nerdtree with Ctrl-\
 nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
@@ -85,6 +87,7 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
 autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
 autocmd FileType javascript map <buffer> tr :TernRename<CR>
 let g:tern_show_signature_in_pum = 1
+let g:tern_show_argument_hints = 'on_hold'
 set completeopt-=preview
 
 NeoBundle "scrooloose/syntastic"
