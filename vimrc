@@ -160,8 +160,11 @@ NeoBundle 'Shougo/unite.vim' "{{{
     nnoremap <silent> [unite]h :<C-u>Unite -auto-resize -buffer-name=help help<cr>
   "}}}
 
+NeoBundle "othree/html5.vim"
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
-   autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><cr> <c-y>,
+   autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <expr><tab> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: "<c-y>,"
 "}}}
 
 NeoBundle 'nelstrom/vim-visual-star-search'
@@ -456,6 +459,9 @@ nnoremap <C-X>f :ExtractJSFunction<CR>
 
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Edit file under cursor
+nnoremap <Leader>gf :edit <cfile><cr>
 
 " Open current file with ,o
 nnoremap <Leader>o :!open '%'\<CR>\<CR>
