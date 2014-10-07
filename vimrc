@@ -36,8 +36,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
-NeoBundle "kien/ctrlp.vim"
-NeoBundle "fisadev/vim-ctrlp-cmdpalette"
+NeoBundle "ctrlpvim/ctrlp.vim"
 
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
@@ -169,6 +168,9 @@ NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','x
 
 NeoBundle 'nelstrom/vim-visual-star-search'
 NeoBundle 'anvaka/snip5'
+NeoBundle 'anvaka/vim-define-key'
+nmap <Space>p :CtrlPKeys<CR>
+
 NeoBundle 'Shougo/neosnippet.vim' "{{{
   let g:neosnippet#disable_runtime_snippets = {
   \   '_' : 1,
@@ -457,20 +459,26 @@ endfunction
 command! ExtractJSFunction :call ExtractJSFunction()
 nnoremap <C-X>f :ExtractJSFunction<CR>
 
-" Search and replace the word under the cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
-
-" Edit file under cursor
-nnoremap <Leader>gf :edit <cfile><cr>
-
-" Open current file with ,o
-nnoremap <Leader>o :!open '%'\<CR>\<CR>
-
 function! Slide(num)
   call system('git checkout -- .')
   call system('git checkout slide'.a:num)
   exec "e!"
 endfunction
 
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-map <F8> :so $MYVIMRC<CR>
+call cmd#define('Reload .vimrc', ":source $MYVIMRC<CR>")
+call cmd#define('Quit without checking for changes (same as ":q!")', "ZQ", "}}")
+call cmd#define('Search and replace the word under the cursor', ':%s/\<<C-r><C-w>\>/', "<Leader>s")
+call cmd#define('Edit file under cursor', ':edit <cfile><cr>', "<Leader>gf")
+call cmd#define('Open current file with system app', ':!open "%"<CR><CR>', "<Leader>o")
+call cmd#define('Debug syntax highlight', ':echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . "> trans<" . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>')
+call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<CR>:enew<CR>"zp')
+call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
+
+function! s:defineSyntax(language)
+  call cmd#define('Set Syntax: ' . a:language, ":set ft=" . a:language . '<CR>')
+  return ''
+endfunction
+
+let s:languages = ['HTML', 'JavaScript', 'Vim']
+let s:result = map(s:languages, 's:defineSyntax(v:val)')
+
