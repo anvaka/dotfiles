@@ -311,11 +311,11 @@ set sidescroll=1
 
 " Appearance
 set laststatus=2   " Always show the statusline
-set t_ut=          " disable backgroun color erase, play nicely with tmux
 set t_Co=256       " 256 colors terminal
 
 set encoding=utf-8
 set term=xterm-256color
+set t_ut=          " disable backgroun color erase, play nicely with tmux
 set termencoding=utf-8
 set number
 set ttimeoutlen=50  " Reduce annoying delay for key codes, especially <Esc>..."
