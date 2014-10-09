@@ -475,10 +475,10 @@ call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<C
 call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
 
 function! s:defineSyntax(language)
-  call cmd#define('Set Syntax: ' . a:language, ":set ft=" . a:language . '<CR>')
+  call cmd#define('Set Syntax: ' . a:language, ":set ft=" . tolower(a:language) . '<CR>')
   return ''
 endfunction
 
-let s:languages = ['HTML', 'JavaScript', 'Vim']
+let s:languages = ['HTML', 'JavaScript', 'Vim', 'none']
 let s:result = map(s:languages, 's:defineSyntax(v:val)')
 
