@@ -45,7 +45,7 @@ let g:ctrlp_max_files=0
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_use_caching = 0
 
-nnoremap <space><space> :CtrlPBuffer<CR>
+" nnoremap <space><space> :CtrlPBuffer<CR>
 
 NeoBundle "tomtom/tcomment_vim"
 NeoBundle "scrooloose/nerdtree"
@@ -108,12 +108,9 @@ NeoBundle 'einars/js-beautify'
 
 NeoBundle "Shougo/vimproc.vim"
 NeoBundle 'Shougo/unite.vim' "{{{
-  let bundle = neobundle#get('unite.vim')
-  function! bundle.hooks.on_source(bundle)
-    "call unite#filters#matcher_default#use(['matcher_fuzzy'])
-    "call unite#filters#sorter_default#use(['sorter_rank'])
-    call unite#custom#profile('files', 'filters', 'sorter_rank')
-  endfunction
+  call unite#custom#source('file,file/new,buffer,file_rec,file_mru,menu', 'matchers', 'matcher_fuzzy')
+  call unite#filters#sorter_default#use(['sorter_rank'])
+  call unite#custom#profile('files', 'filters', 'sorter_rank')
 
   let g:unite_data_directory='~/.vim/.cache/unite'
   let g:unite_enable_start_insert=1
@@ -121,6 +118,7 @@ NeoBundle 'Shougo/unite.vim' "{{{
   let g:unite_source_rec_max_cache_files=5000
   let g:unite_prompt='» '
 
+  let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
   let g:unite_source_grep_command='ag'
   let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
   let g:unite_source_grep_recursive_opt=''
@@ -135,8 +133,8 @@ NeoBundle 'Shougo/unite.vim' "{{{
   nmap <space> [unite]
   nnoremap [unite] <nop>
 
-" nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-  nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+  nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:! buffer file_mru<cr><c-u>
+  "nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_mru file_rec/async:!<cr><c-u>
   nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
   nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
@@ -169,7 +167,7 @@ NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','x
 NeoBundle 'nelstrom/vim-visual-star-search'
 NeoBundle 'anvaka/snip5'
 NeoBundle 'anvaka/vim-define-key'
-nmap <Space>p :CtrlPKeys<CR>
+nmap <Space>p :Unite menu:palette<CR>
 
 NeoBundle 'Shougo/neosnippet.vim' "{{{
   let g:neosnippet#disable_runtime_snippets = {
@@ -465,7 +463,7 @@ function! Slide(num)
   exec "e!"
 endfunction
 
-call cmd#define('Reload .vimrc', ":source $MYVIMRC<CR>")
+call cmd#define('Reload .vimrc', "source $MYVIMRC")
 call cmd#define('Quit without checking for changes (same as ":q!")', "ZQ", "}}")
 call cmd#define('Search and replace the word under the cursor', ':%s/\<<C-r><C-w>\>/', "<Leader>s")
 call cmd#define('Edit file under cursor', ':edit <cfile><cr>', "<Leader>gf")
@@ -475,10 +473,9 @@ call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<C
 call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
 
 function! s:defineSyntax(language)
-  call cmd#define('Set Syntax: ' . a:language, ":set ft=" . tolower(a:language) . '<CR>')
+  call cmd#define('Set Syntax: ' . a:language, "set ft=" . tolower(a:language))
   return ''
 endfunction
 
 let s:languages = ['HTML', 'JavaScript', 'Vim', 'none']
 let s:result = map(s:languages, 's:defineSyntax(v:val)')
-
