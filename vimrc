@@ -463,7 +463,7 @@ function! Slide(num)
   exec "e!"
 endfunction
 
-call cmd#define('Reload .vimrc', "source $MYVIMRC")
+call cmd#define('Reload .vimrc', ":source $MYVIMRC<CR>")
 call cmd#define('Quit without checking for changes (same as ":q!")', "ZQ", "}}")
 call cmd#define('Search and replace the word under the cursor', ':%s/\<<C-r><C-w>\>/', "<Leader>s")
 call cmd#define('Edit file under cursor', ':edit <cfile><cr>', "<Leader>gf")
@@ -473,7 +473,7 @@ call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<C
 call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
 
 function! s:defineSyntax(language)
-  call cmd#define('Set Syntax: ' . a:language, "set ft=" . tolower(a:language))
+  call cmd#define('Set Syntax: ' . a:language, ":set ft=" . tolower(a:language) . '<CR>')
   return ''
 endfunction
 
