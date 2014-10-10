@@ -7,7 +7,6 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
 
 set hidden         "allow buffer switching without saving
 syntax on          "turn on syntax highlighting
@@ -30,35 +29,18 @@ set cursorline
 " the plugins.
 let mapleader=","
 
+call neobundle#begin(expand('~/.vim/bundle'))
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
-" Load all plugins
+
 NeoBundle 'matchit.zip'
 NeoBundle "dahu/LearnVim"
 NeoBundle "aming/vim-mason"
 NeoBundle "ctrlpvim/ctrlp.vim"
-
 NeoBundle "tomasr/molokai"
 NeoBundle "altercation/vim-colors-solarized"
-
-let g:ctrlp_max_files=0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_use_caching = 0
-
-" nnoremap <space><space> :CtrlPBuffer<CR>
-
 NeoBundle "tomtom/tcomment_vim"
 NeoBundle "scrooloose/nerdtree"
-" Open the project tree and expose current file in the nerdtree with Ctrl-\
-nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
-NeoBundle 'bling/vim-airline' "{{{
-  let g:airline_theme = 'solarized'
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 0
-  let g:airline#extensions#tabline#left_sep=' '
-  let g:airline#extensions#tabline#left_alt_sep='¦'
-  let g:airline#extensions#tabline#buffer_nr_show = 1
-"}}}
 
 " repeat.vim: enable repeating supported plugin maps with "."
 " http://www.vim.org/scripts/script.php?script_id=2136
@@ -68,10 +50,14 @@ NeoBundle "tpope/vim-dispatch"
 NeoBundle "tpope/vim-unimpaired"
 NeoBundle "tpope/vim-fugitive"
 NeoBundle "jtratner/vim-flavored-markdown"
-augroup markdown
-    au!
-    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
-augroup END
+
+NeoBundle 'bling/vim-airline'
+  let g:airline_theme = 'solarized'
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 0
+  let g:airline#extensions#tabline#left_sep=' '
+  let g:airline#extensions#tabline#left_alt_sep='¦'
+  let g:airline#extensions#tabline#buffer_nr_show = 1
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
     \ 'autoload': { 'filetypes': ['javascript'] },
@@ -83,12 +69,6 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
     \ },
   \ }
 
-autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
-autocmd FileType javascript map <buffer> tr :TernRename<CR>
-let g:tern_show_signature_in_pum = 1
-let g:tern_show_argument_hints = 'on_hold'
-set completeopt-=preview
-
 NeoBundle "scrooloose/syntastic"
 NeoBundle "pangloss/vim-javascript"
 NeoBundle "Raimondi/delimitMate"
@@ -98,66 +78,18 @@ NeoBundle "kana/vim-textobj-entire"
 NeoBundle "kana/vim-textobj-line"
 NeoBundle "thinca/vim-textobj-function-javascript"
 NeoBundle "moll/vim-node"
+NeoBundle 'maksimr/vim-jsbeautify'
+NeoBundle 'einars/js-beautify'
+NeoBundle "Shougo/vimproc.vim"
+NeoBundle 'Shougo/unite.vim'
 
 NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
 NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
-
-NeoBundle 'maksimr/vim-jsbeautify'
-NeoBundle 'einars/js-beautify'
-
-NeoBundle "Shougo/vimproc.vim"
-NeoBundle 'Shougo/unite.vim' "{{{
-  call unite#custom#source('file,file/new,buffer,file_rec,file_mru,menu', 'matchers', 'matcher_fuzzy')
-  call unite#filters#sorter_default#use(['sorter_rank'])
-  call unite#custom#profile('files', 'filters', 'sorter_rank')
-
-  let g:unite_data_directory='~/.vim/.cache/unite'
-  let g:unite_enable_start_insert=1
-  let g:unite_source_history_yank_enable=1
-  let g:unite_source_rec_max_cache_files=5000
-  let g:unite_prompt='» '
-
-  let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
-  let g:unite_source_grep_command='ag'
-  let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
-  let g:unite_source_grep_recursive_opt=''
-
-  function! s:unite_settings()
-    nmap <buffer> Q <plug>(unite_exit)
-    nmap <buffer> <esc> <plug>(unite_exit)
-    imap <buffer> <esc> <plug>(unite_exit)
-  endfunction
-  autocmd FileType unite call s:unite_settings()
-
-  nmap <space> [unite]
-  nnoremap [unite] <nop>
-
-  nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:! buffer file_mru<cr><c-u>
-  "nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_mru file_rec/async:!<cr><c-u>
-  nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
-  nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
-  nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
-  nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
-  nnoremap <silent> [unite]/ :<C-u>Unite -auto-preview -no-start-insert -no-quit -buffer-name=search grep:.<cr>
-  nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-  nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
-  "}}}
-  NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
-  NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':'colorscheme'}} "{{{
-    nnoremap <silent> [unite]c :<C-u>Unite -winheight=10 -auto-preview -buffer-name=colorschemes colorscheme<cr>
-  "}}}
-  NeoBundleLazy 'tsukkee/unite-tag', {'autoload':{'unite_sources':['tag','tag/file']}} "{{{
-    nnoremap <silent> [unite]t :<C-u>Unite -auto-resize -buffer-name=tag tag tag/file<cr>
-  "}}}
-  NeoBundleLazy 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}} "{{{
-    nnoremap <silent> [unite]o :<C-u>Unite -auto-resize -buffer-name=outline outline<cr>
-  "}}}
-  NeoBundleLazy 'Shougo/unite-help', {'autoload':{'unite_sources':'help'}} "{{{
-    nnoremap <silent> [unite]h :<C-u>Unite -auto-resize -buffer-name=help help<cr>
-  "}}}
+NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 
 NeoBundle "othree/html5.vim"
+
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
    autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <expr><tab> neosnippet#expandable_or_jumpable() ?
         \ "\<Plug>(neosnippet_expand_or_jump)"
@@ -167,7 +99,6 @@ NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','x
 NeoBundle 'nelstrom/vim-visual-star-search'
 NeoBundle 'anvaka/snip5'
 NeoBundle 'anvaka/vim-define-key'
-nmap <Space>p :Unite menu:palette<CR>
 
 NeoBundle 'Shougo/neosnippet.vim' "{{{
   let g:neosnippet#disable_runtime_snippets = {
@@ -203,20 +134,6 @@ NeoBundle 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3
 
 NeoBundle 'Shougo/context_filetype.vim'
 
-" True Sublime Text style multiple selections for Vim
-NeoBundle "kris89/vim-multiple-cursors" "{{{
-  " Fix multiple cursors with neocomplete
-  function! Multiple_cursors_before()
-      exe 'NeoCompleteLock'
-      echo 'Disabled autocomplete'
-  endfunction
-
-  function! Multiple_cursors_after()
-      exe 'NeoCompleteUnlock'
-      echo 'Enabled autocomplete'
-  endfunction
-"}}}
-
 NeoBundle "kshenoy/vim-signature"
 NeoBundle "rking/ag.vim"
 " Run commands quickly. <Leader>r
@@ -225,12 +142,63 @@ NeoBundle "thinca/vim-quickrun"
 " A Vim plugin which shows a git diff in the gutter (sign column).
 NeoBundle "airblade/vim-gitgutter"
 NeoBundle 'bufkill.vim'
-NeoBundleLazy 'EasyGrep', {'autoload':{'commands':'GrepOptions'}} "{{{
-  let g:EasyGrepRecursive=1
-  let g:EasyGrepAllOptionsInExplorer=1
-  let g:EasyGrepCommand=1
-  nnoremap <leader>vo :GrepOptions<cr>
-"}}}
+
+call neobundle#end()
+
+let g:ctrlp_max_files=0
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0
+
+" Open the project tree and expose current file in the nerdtree with Ctrl-\
+nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
+
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
+
+autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
+autocmd FileType javascript map <buffer> tr :TernRename<CR>
+let g:tern_show_signature_in_pum = 1
+let g:tern_show_argument_hints = 'on_hold'
+set completeopt-=preview
+
+call unite#custom#source('file,file/new,buffer,file_rec,file_mru,menu', 'matchers', 'matcher_fuzzy')
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#profile('files', 'filters', 'sorter_rank')
+
+let g:unite_data_directory='~/.vim/.cache/unite'
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable=1
+let g:unite_source_rec_max_cache_files=5000
+let g:unite_prompt='» '
+
+let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+let g:unite_source_grep_command='ag'
+let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
+let g:unite_source_grep_recursive_opt=''
+
+function! s:unite_settings()
+  nmap <buffer> Q <plug>(unite_exit)
+  nmap <buffer> <esc> <plug>(unite_exit)
+  imap <buffer> <esc> <plug>(unite_exit)
+endfunction
+autocmd FileType unite call s:unite_settings()
+
+nmap <space> [unite]
+nnoremap [unite] <nop>
+
+nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:! buffer file_mru<cr><c-u>
+nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
+nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
+nnoremap <silent> [unite]/ :<C-u>Unite -auto-preview -no-start-insert -no-quit -buffer-name=search grep:.<cr>
+nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
+
+nmap <Space>p :Unite menu:palette<CR>
 
 let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
 let g:syntastic_javascript_checkers = ['jshint']
@@ -479,3 +447,4 @@ endfunction
 
 let s:languages = ['HTML', 'JavaScript', 'Vim', 'none']
 let s:result = map(s:languages, 's:defineSyntax(v:val)')
+
