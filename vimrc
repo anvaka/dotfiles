@@ -91,9 +91,9 @@ NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 NeoBundle "othree/html5.vim"
 
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
-   autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <expr><tab> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: "<c-y>,"
+  " autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <expr><tab> neosnippet#expandable_or_jumpable() ?
+  "    \ "\<Plug>(neosnippet_expand_or_jump)"
+  "    \: "<c-y>,"
 "}}}
 
 NeoBundle 'nelstrom/vim-visual-star-search'
