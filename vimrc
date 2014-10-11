@@ -90,7 +90,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \    },
 \ }
 NeoBundle 'Shougo/unite.vim'
-
+NeoBundle 'osyo-manga/unite-quickfix'
 NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
 NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
@@ -174,8 +174,13 @@ let g:tern_show_argument_hints = 'on_hold'
 set completeopt-=preview
 
 call unite#custom#source('file,file/new,buffer,file_rec,file_mru,menu', 'matchers', 'matcher_fuzzy')
+call unite#custom#source('menu', 'sorters', 'sorter_reverse')
 call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#profile('files', 'filters', 'sorter_rank')
+" Call unite#custom#profile('default', 'context', {
+"               \ 'start_insert': 1,
+"               \ 'direction': 'botright',
+"               \ })
 
 let g:unite_data_directory='~/.vim/.cache/unite'
 let g:unite_enable_start_insert=1
@@ -307,7 +312,7 @@ set hlsearch        " Hilight searches by default
 set viminfo='100,f1 " Save up to 100 marks, enable capital marks
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
-
+set diffopt+=vertical " i love vertical diffs
 
 " My keyboard shortucts:
 " Let's make escape better, together.
