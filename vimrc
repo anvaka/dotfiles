@@ -80,7 +80,15 @@ NeoBundle "thinca/vim-textobj-function-javascript"
 NeoBundle "moll/vim-node"
 NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'einars/js-beautify'
-NeoBundle "Shougo/vimproc.vim"
+NeoBundle 'Shougo/vimproc.vim', {
+\ 'build' : {
+\     'windows' : 'tools\\update-dll-mingw',
+\     'cygwin' : 'make -f make_cygwin.mak',
+\     'mac' : 'make -f make_mac.mak',
+\     'linux' : 'make',
+\     'unix' : 'gmake',
+\    },
+\ }
 NeoBundle 'Shougo/unite.vim'
 
 NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
@@ -99,6 +107,7 @@ NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','x
 NeoBundle 'nelstrom/vim-visual-star-search'
 NeoBundle 'anvaka/snip5'
 NeoBundle 'anvaka/vim-define-key'
+NeoBundle 'anvaka/vim-cmd-bundle'
 
 NeoBundle 'Shougo/neosnippet.vim' "{{{
   let g:neosnippet#disable_runtime_snippets = {
@@ -440,6 +449,8 @@ call cmd#define('Debug syntax highlight', ':echo "hi<" . synIDattr(synID(line(".
 call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<CR>:enew<CR>"zp')
 call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
 
+call cmdbundle#load()
+
 function! s:defineSyntax(language)
   call cmd#define('Set Syntax: ' . a:language, ":set ft=" . tolower(a:language) . '<CR>')
   return ''
@@ -447,4 +458,3 @@ endfunction
 
 let s:languages = ['HTML', 'JavaScript', 'Vim', 'none']
 let s:result = map(s:languages, 's:defineSyntax(v:val)')
-
