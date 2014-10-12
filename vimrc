@@ -445,12 +445,10 @@ function! Slide(num)
   exec "e!"
 endfunction
 
-call cmd#define('Reload .vimrc', ":source $MYVIMRC<CR>")
 call cmd#define('Quit without checking for changes (same as ":q!")', "ZQ", "}}")
 call cmd#define('Search and replace the word under the cursor', ':%s/\<<C-r><C-w>\>/', "<Leader>s")
 call cmd#define('Edit file under cursor', ':edit <cfile><cr>', "<Leader>gf")
 call cmd#define('Open current file with system app', ':!open "%"<CR><CR>', "<Leader>o")
-call cmd#define('Debug syntax highlight', ':echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . "> trans<" . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>')
 call cmd#define('Preferences: Key Bindings', ':redir @z<CR>:silent verbose map<CR>:enew<CR>"zp')
 call cmd#define('Preferences: Commands', ':redir @z<CR>:silent verbose command<CR>:enew<CR>"zp')
 
