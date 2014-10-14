@@ -1,0 +1,2 @@
+# Type something an press key up to search back in history
+bindkey "^[[A" history-beginning-search-backward
