@@ -8,8 +8,16 @@ if has('vim_starting')
 endif
 
 
+
 set hidden         "allow buffer switching without saving
 syntax on          "turn on syntax highlighting
+
+autocmd BufReadPre * if getfsize(expand("%")) > 5000000 | call s:setLargFile() | endif
+
+function! s:setLargFile()
+  syntax off
+endfunction
+
 set history=1000   "number of command lines to remember
 set list           "highlight whitespace
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
@@ -167,10 +175,7 @@ augroup markdown
 augroup END
 
 
-autocmd FileType javascript map <buffer> <C-]> :TernDef<CR>
-autocmd FileType javascript map <buffer> tr :TernRename<CR>
 let g:tern_show_signature_in_pum = 1
-let g:tern_show_argument_hints = 'on_hold'
 set completeopt-=preview
 
 call unite#custom#source('file,file/new,buffer,file_rec,file_mru,menu', 'matchers', 'matcher_fuzzy')
@@ -407,8 +412,14 @@ endfunction
 command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap ,w :StripTrailingWhitespaces<CR>
 
+autocmd FileType javascript map <buffer> gf <Plug>NodeGotoFile
+autocmd FileType javascript map <buffer> gd :TernDef<CR>
+autocmd FileType javascript map <buffer> tr :TernRename<CR>
 " For programming languages using a semi colon at the end of statement.
 autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
+
+autocmd FileType javascript inoremap {<CR> {<CR>}<C-o>O
+
 " for html
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
@@ -416,8 +427,6 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 " If nerd tree is the last window - quit
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-autocmd FileType javascript inoremap {<CR> {<CR>}<C-o>O
 
 " toggle paste
 map <F6> :set invpaste<CR>:set paste?<CR>
