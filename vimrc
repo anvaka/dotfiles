@@ -58,6 +58,7 @@ NeoBundle "tpope/vim-dispatch"
 NeoBundle "tpope/vim-unimpaired"
 NeoBundle "tpope/vim-fugitive"
 NeoBundle "jtratner/vim-flavored-markdown"
+NeoBundle "tikhomirov/vim-glsl"
 
 NeoBundle 'bling/vim-airline'
   let g:airline_theme = 'solarized'
