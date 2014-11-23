@@ -1,13 +1,15 @@
 set nocompatible               " Be iMproved
 set autoread                   " auto reload if file saved externally
+set shortmess=a
+set cmdheight=2
+set spell
+set spellfile=~/.vim/spellfile.utf-8.add
 
 set backspace=indent,eol,start
 
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-
-
 
 set hidden         "allow buffer switching without saving
 syntax on          "turn on syntax highlighting
@@ -33,7 +35,7 @@ set cursorline
 
 " Change leader to a comma because the backslash is too far away
 " That means all \x commands turn into ,x
-" The mapleader has to be set before vundle starts loading all
+" The mapleader has to be set before NeoBundle starts loading all
 " the plugins.
 let mapleader=","
 
@@ -42,23 +44,23 @@ call neobundle#begin(expand('~/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'matchit.zip'
-NeoBundle "dahu/LearnVim"
-NeoBundle "aming/vim-mason"
-NeoBundle "ctrlpvim/ctrlp.vim"
-NeoBundle "tomasr/molokai"
-NeoBundle "altercation/vim-colors-solarized"
-NeoBundle "tomtom/tcomment_vim"
-NeoBundle "scrooloose/nerdtree"
+NeoBundle 'dahu/LearnVim'
+NeoBundle 'aming/vim-mason'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'scrooloose/nerdtree'
 
 " repeat.vim: enable repeating supported plugin maps with "."
 " http://www.vim.org/scripts/script.php?script_id=2136
-NeoBundle "tpope/vim-surround"
-NeoBundle "tpope/vim-repeat"
-NeoBundle "tpope/vim-dispatch"
-NeoBundle "tpope/vim-unimpaired"
-NeoBundle "tpope/vim-fugitive"
-NeoBundle "jtratner/vim-flavored-markdown"
-NeoBundle "tikhomirov/vim-glsl"
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'jtratner/vim-flavored-markdown'
+NeoBundle 'tikhomirov/vim-glsl'
 
 NeoBundle 'bling/vim-airline'
   let g:airline_theme = 'solarized'
@@ -78,15 +80,15 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
     \ },
   \ }
 
-NeoBundle "scrooloose/syntastic"
-NeoBundle "pangloss/vim-javascript"
-NeoBundle "Raimondi/delimitMate"
-NeoBundle "kana/vim-textobj-user"
-NeoBundle "kana/vim-textobj-function"
-NeoBundle "kana/vim-textobj-entire"
-NeoBundle "kana/vim-textobj-line"
-NeoBundle "thinca/vim-textobj-function-javascript"
-NeoBundle "moll/vim-node"
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-function'
+NeoBundle 'kana/vim-textobj-entire'
+NeoBundle 'kana/vim-textobj-line'
+NeoBundle 'thinca/vim-textobj-function-javascript'
+NeoBundle 'moll/vim-node'
 NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'einars/js-beautify'
 NeoBundle 'Shougo/vimproc.vim', {
@@ -105,7 +107,7 @@ NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','
 NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
 NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 
-NeoBundle "othree/html5.vim"
+NeoBundle 'othree/html5.vim'
 
 NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
   " autocmd FileType html,xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <expr><tab> neosnippet#expandable_or_jumpable() ?
@@ -152,13 +154,13 @@ NeoBundle 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3
 
 NeoBundle 'Shougo/context_filetype.vim'
 
-NeoBundle "kshenoy/vim-signature"
-NeoBundle "rking/ag.vim"
+NeoBundle 'kshenoy/vim-signature'
+NeoBundle 'rking/ag.vim'
 " Run commands quickly. <Leader>r
-NeoBundle "thinca/vim-quickrun"
+NeoBundle 'thinca/vim-quickrun'
 
 " A Vim plugin which shows a git diff in the gutter (sign column).
-NeoBundle "airblade/vim-gitgutter"
+NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'bufkill.vim'
 
 call neobundle#end()
@@ -167,7 +169,7 @@ let g:ctrlp_max_files=0
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_use_caching = 0
 
-" Open the project tree and expose current file in the nerdtree with Ctrl-\
+" Open the project tree and expose current file in the NerdTree with Ctrl-\
 nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
 
 augroup markdown
@@ -272,12 +274,12 @@ set linebreak    "Wrap lines at convenient points
 
 set foldmethod=manual   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
+set nofoldenable        "don't fold by default
 
 " ================ Completion =======================
 
 set wildmode=list:longest
-set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+set wildmenu                "enable ctrl-n and ctrl-p to scroll through matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -301,7 +303,7 @@ set t_Co=256       " 256 colors terminal
 
 set encoding=utf-8
 set term=xterm-256color
-set t_ut=          " disable backgroun color erase, play nicely with tmux
+set t_ut=          " disable background color erase, play nicely with tmux
 set termencoding=utf-8
 set number
 set ttimeoutlen=50  " Reduce annoying delay for key codes, especially <Esc>..."
@@ -314,13 +316,13 @@ hi! Visual ctermfg=White ctermbg=125 term=none cterm=none
 " ================ Search Settings  =================
 
 set incsearch       " Find the next match as we type the search
-set hlsearch        " Hilight searches by default
+set hlsearch        " Highlight searches by default
 set viminfo='100,f1 " Save up to 100 marks, enable capital marks
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
-set diffopt+=vertical " i love vertical diffs
+set diffopt+=vertical " I love vertical diffs
 
-" My keyboard shortucts:
+" My keyboard shortcuts:
 " Let's make escape better, together.
 inoremap jk <Esc>
 inoremap JK <Esc>
@@ -396,7 +398,7 @@ nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
 " Kill current buffer without closing split
 nnoremap <silent> ,q :bn \| bd #<CR>
 
-" via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
+" via: http://rails-estpractices.com/posts/60-remove-trailing-whitespace
 " Strip trailing whitespace
 function! <SID>StripTrailingWhitespaces()
     " Preparation: save last search, and cursor position.
@@ -427,7 +429,7 @@ autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 " If nerd tree is the last window - quit
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists('b:NERDTreeType') && b:NERDTreeType == "primary") | q | endif
 
 " toggle paste
 map <F6> :set invpaste<CR>:set paste?<CR>
