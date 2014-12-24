@@ -4,9 +4,8 @@ set shortmess=a
 set cmdheight=2
 set spell
 set spellfile=~/.vim/spellfile.utf-8.add
-" I don't want to check xml files
-autocmd BufEnter *.xml  set nospell
-autocmd BufLeave *.xml  set spell
+
+autocmd FileType ant setlocal nospell
 
 set backspace=indent,eol,start
 
