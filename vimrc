@@ -113,6 +113,12 @@ inoremap Jk <Esc>
 map <F6> :set invpaste<CR>:set paste?<CR>
 imap <F6> <C-O>:set paste<CR>
 
+" Open current file with ,o
+nnoremap <Leader>o :!open %\<CR>\<CR>
+
+" Search and replace the word under the cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
 nnoremap <silent> <Leader>q :bn \| bd #<CR> " Kill current buffer without closing split
 
 " ================== Install Plguins ============
@@ -154,6 +160,7 @@ Plug 'tpope/vim-fugitive'
   nnoremap <silent> <leader>gp :Git push<CR>
   nnoremap <silent> <leader>gw :Gwrite<CR>
   nnoremap <silent> <leader>gr :Gremove<CR>
+  set diffopt=vertical " Show always vertical diff
 
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
