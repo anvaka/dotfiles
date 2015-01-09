@@ -144,6 +144,7 @@ Plug 'bling/vim-airline'
   let g:airline#extensions#tabline#left_alt_sep='¦'
   let g:airline#extensions#tabline#buffer_nr_show = 1
 
+Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
 Plug 'tpope/vim-fugitive'
   nnoremap <silent> <leader>gs :Gstatus<CR>
   nnoremap <silent> <leader>gd :Gdiff<CR>
