@@ -116,9 +116,11 @@ imap <F6> <C-O>:set paste<CR>
 nnoremap <silent> <Leader>q :bn \| bd #<CR> " Kill current buffer without closing split
 
 " ================== Install Plguins ============
+let s:first_time_launch = 0
 if empty(glob("~/.vim/autoload/plug.vim"))
     silent execute '!mkdir -p ~/.vim/autoload'
     silent execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+    let s:first_time_launch = 1
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -195,6 +197,10 @@ Plug 'altercation/vim-colors-solarized'
 
 filetype plugin indent on
 call plug#end()
+
+if s:first_time_launch
+  PlugInstall
+endif
 
 " Now that we have plugins loaded, initialize their settings:
 try
