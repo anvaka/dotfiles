@@ -133,6 +133,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFind' }
   nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical res 30<CR>
+  " If nerd tree is the last window - quit
+  autocmd bufenter * if (winnr("$") == 1 && exists('b:NERDTreeType') && b:NERDTreeType == "primary") | q | endif
 
 Plug 'rking/ag.vim'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -179,6 +181,7 @@ Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
   Plug 'honza/vim-snippets'
+  Plug 'anvaka/snip5'
   let g:ycm_complete_in_comments_and_strings=1
   let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
   let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
