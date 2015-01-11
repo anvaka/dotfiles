@@ -114,7 +114,7 @@ map <F6> :set invpaste<CR>:set paste?<CR>
 imap <F6> <C-O>:set paste<CR>
 
 " Open current file with ,o
-nnoremap <Leader>o :!open %\<CR>\<CR>
+nnoremap <Leader>o :!open '%'\<CR>\<CR>
 
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
@@ -190,6 +190,7 @@ Plug 'SirVer/ultisnips'
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 Plug 'mattn/emmet-vim', { 'for': 'html' }
+
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
   let g:tern_show_signature_in_pum = 1
