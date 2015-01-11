@@ -116,6 +116,11 @@ imap <F6> <C-O>:set paste<CR>
 " Open current file with ,o
 nnoremap <Leader>o :!open '%'\<CR>\<CR>
 
+" npm install --save-dev word under cursor
+nnoremap <Leader>t :execute ":!npm install --save-dev " . expand("<cword>")<CR>
+" npm install --save word under cursor
+nnoremap <Leader>s :execute ":!npm install --save " . expand("<cword>")<CR>
+
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
