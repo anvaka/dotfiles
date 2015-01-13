@@ -16,13 +16,13 @@ set cursorline                 " Highlight current line
 set clipboard=unnamed          " give me my system clipboard
 set laststatus=2               " Always show the statusline
 set t_Co=256                   " 256 colors terminal
-set t_ut=                      " Disable backgroun color erase, play nicely with tmux
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
 set showcmd
 
 set encoding=utf-8
 set term=xterm-256color
+set t_ut=                      " Disable backgroun color erase, play nicely with tmux
 set termencoding=utf-8
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
 
