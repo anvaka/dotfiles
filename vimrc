@@ -221,7 +221,7 @@ endif
 
 " Now that we have plugins loaded, initialize their settings:
 try
-  let g:solarized_termcolors=256
+  let g:solarized_termcolors=16 " I'm using solarized palette in iterm. Need 16 color for this
   set background=dark
   colorscheme solarized
   hi! Visual ctermfg=White ctermbg=125 term=none cterm=none
