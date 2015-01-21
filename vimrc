@@ -177,12 +177,6 @@ Plug 'scrooloose/syntastic'
   let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
   let g:syntastic_javascript_checkers = ['jshint']
 
-Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
-  Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
-  autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
-  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
   Plug 'honza/vim-snippets'
@@ -194,6 +188,16 @@ Plug 'SirVer/ultisnips'
   let g:UltiSnipsJumpForwardTrigger="<tab>"
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
+" Javascript goodies
+Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
+  Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
+  autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
+  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+Plug 'moll/vim-node', {'for': ['javascript']}
+  autocmd FileType javascript map <buffer> gf <Plug>NodeGotoFile
+
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -201,6 +205,7 @@ Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
   let g:tern_show_signature_in_pum = 1
   let g:tern_show_argument_hints = 'on_hold'
   set completeopt-=preview
+  autocmd FileType javascript map <buffer> gd :TernDef<CR>
 
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-function'
@@ -211,6 +216,8 @@ Plug 'aming/vim-mason', { 'for': 'mason' }
   au BufNewFile,BufRead *.mi set ft=mason
 
 Plug 'altercation/vim-colors-solarized'
+Plug 'groenewege/vim-less', { 'for': 'less' }
+Plug 'briancollins/vim-jst', { 'for': 'ejs' }
 
 filetype plugin indent on
 call plug#end()
@@ -221,7 +228,7 @@ endif
 
 " Now that we have plugins loaded, initialize their settings:
 try
-  let g:solarized_termcolors=16 " I'm using solarized palette in iterm. Need 16 color for this
+  let g:solarized_termcolors=16
   set background=dark
   colorscheme solarized
   hi! Visual ctermfg=White ctermbg=125 term=none cterm=none
