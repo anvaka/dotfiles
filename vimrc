@@ -188,6 +188,13 @@ Plug 'SirVer/ultisnips'
   let g:UltiSnipsJumpForwardTrigger="<tab>"
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
+Plug 'Shougo/unite.vim'
+  let g:unite_source_history_yank_enable=1
+  nmap <space> [unite]
+  nnoremap [unite] <nop>
+  nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+  nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+
 " Javascript goodies
 Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
   Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
