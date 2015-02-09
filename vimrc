@@ -188,12 +188,27 @@ Plug 'SirVer/ultisnips'
   let g:UltiSnipsJumpForwardTrigger="<tab>"
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/unite.vim'
+  function! s:unite_settings()
+    nmap <buffer> Q <plug>(unite_exit)
+    nmap <buffer> <esc> <plug>(unite_exit)
+    imap <buffer> <esc> <plug>(unite_exit)
+  endfunction
+  autocmd FileType unite call s:unite_settings()
   let g:unite_source_history_yank_enable=1
   nmap <space> [unite]
   nnoremap [unite] <nop>
+  try
+    let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+    call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  catch
+  endtry
+  " search a file in the filetree
+  nnoremap [unite]<space> :<C-u>Unite -start-insert file_rec/async<cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
   nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+  nnoremap [unite]/ :Ag <c-r>=expand("<cword>")<cr><cr>
 
 " Javascript goodies
 Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
