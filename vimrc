@@ -19,7 +19,6 @@ set t_Co=256                   " 256 colors terminal
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
 set showcmd
-set ve=all                     " Free cursor movement
 
 set encoding=utf-8
 set term=xterm-256color
