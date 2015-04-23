@@ -19,6 +19,11 @@ set t_Co=256                   " 256 colors terminal
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
 set showcmd
+" Turn off beeping
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
 set encoding=utf-8
 set term=xterm-256color
