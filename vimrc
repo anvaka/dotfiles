@@ -180,7 +180,9 @@ Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/syntastic'
   let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
-  let g:syntastic_javascript_checkers = ['jsxhint']
+  let g:syntastic_javascript_checkers = ['jshint']
+  let g:syntastic_jsx_checkers = ['jsxhint']
+  let g:syntastic_jsx_jsxhint_args = ['--babel']
 
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
