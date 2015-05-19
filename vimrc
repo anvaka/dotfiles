@@ -14,7 +14,7 @@ set foldlevel=99               " Always unfold
 set colorcolumn=80             " Visual guideline at column 80
 set cursorline                 " Highlight current line
 set clipboard=unnamed          " give me my system clipboard
-set laststatus=2               " Always show the statusline
+set laststatus=0               " Never show the statusline
 set t_Co=256                   " 256 colors terminal
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
@@ -154,15 +154,10 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'thinca/vim-quickrun'
 
-Plug 'bling/vim-airline'
-  let g:airline_theme = 'solarized'
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 0
-  let g:airline#extensions#tabline#left_sep=' '
-  let g:airline#extensions#tabline#left_alt_sep='¦'
-  let g:airline#extensions#tabline#buffer_nr_show = 1
-
+" Don't touch sign column
+let g:gitgutter_override_sign_column_highlight = 0
 Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
+
 Plug 'tpope/vim-fugitive'
   nnoremap <silent> <leader>gs :Gstatus<CR>
   nnoremap <silent> <leader>gd :Gdiff<CR>
@@ -181,8 +176,8 @@ Plug 'tpope/vim-repeat'
 Plug 'scrooloose/syntastic'
   let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
   let g:syntastic_javascript_checkers = ['jshint']
-  let g:syntastic_jsx_checkers = ['jsxhint']
-  let g:syntastic_jsx_jsxhint_args = ['--babel']
+"  let g:syntastic_jsx_checkers = ['jsxhint']		
+"  let g:syntastic_jsx_jsxhint_args = ['--babel']
 
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
@@ -203,19 +198,19 @@ Plug 'Shougo/unite.vim'
     imap <buffer> <esc> <plug>(unite_exit)
   endfunction
   autocmd FileType unite call s:unite_settings()
+  let g:unite_source_history_yank_enable=1
   nmap <space> [unite]
   nnoremap [unite] <nop>
-  let g:unite_source_history_yank_enable=1
   try
-    let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+    let g:unite_source_rec_async_command='ag --nocolor --ignore "node_modules/" --nogroup -g ""'
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
   catch
   endtry
+  " search a file in the filetree
   nnoremap [unite]<space> :<C-u>Unite -start-insert file_rec/async<cr>
-  nnoremap [unite]r <Plug>(unite_restart)
-  nmap <leader>/ :Ag <c-r>=expand("<cword>")<cr><cr>
   nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
   nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+  nnoremap [unite]/ :Ag <c-r>=expand("<cword>")<cr><cr>
 
 " Javascript goodies
 Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
@@ -236,8 +231,6 @@ Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
   set completeopt-=preview
   autocmd FileType javascript map <buffer> gd :TernDef<CR>
 
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-function'
 Plug 'kana/vim-textobj-entire'
@@ -248,7 +241,7 @@ Plug 'aming/vim-mason', { 'for': 'mason' }
 
 Plug 'altercation/vim-colors-solarized'
 Plug 'groenewege/vim-less', { 'for': 'less' }
-Plug 'briancollins/vim-jst', { 'for': 'ejs' }
+Plug 'briancollins/vim-jst'
 
 filetype plugin indent on
 call plug#end()
@@ -259,10 +252,15 @@ endif
 
 " Now that we have plugins loaded, initialize their settings:
 try
-  let g:solarized_termcolors=16
+  let g:solarized_termcolors=256
   set background=dark
   colorscheme solarized
   hi! Visual ctermfg=White ctermbg=125 term=none cterm=none
+
+  highlight SignColumn ctermbg=234
+  highlight LineNr ctermbg=234
+  highlight LineNr ctermfg=235
+  highlight NonText ctermfg=235
 catch
   " Probably running for the first time. Need to run PlugInstall
 endtry
