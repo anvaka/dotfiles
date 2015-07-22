@@ -1,3 +1,4 @@
+## Keyboard
 # Type something an press key up to search back in history
 bindkey "^[[A" history-beginning-search-backward
 # Use vim mode
@@ -15,3 +16,12 @@ export KEYTIMEOUT=1
 
 # <ESC> v to edit in the editor
 bindkey -M vicmd v edit-command-line
+
+## Aliases
+# update package version, push to GitHub and publish to npm
+vv() { npm version $* && git push && git push --tags && npm publish; }
+
+# Edit all modified files
+gim(){
+  vim `git ls-files -m` -p
+}
