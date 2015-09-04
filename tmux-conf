@@ -1,0 +1,48 @@
+set -g default-terminal xterm-256color
+
+# Keep your finger on ctrl, or don't
+bind-key ^D detach-client
+
+# Screen like binding
+unbind C-b
+set -g prefix C-a
+
+# set first window to index 1 (not 0) to map more to the keyboard layout...
+set -g base-index 1
+
+# Create splits and vertical splits
+# bind-key v split-window -h
+# bind-key ^V split-window -h
+# bind-key s split-window
+# bind-key ^S split-window
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# y and p as in vim
+setw -g mode-mouse on
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+
+bind -t vi-copy 'v' begin-selection
+bind -t vi-copy 'y' copy-selection
+bind -t vi-copy 'Space' halfpage-down
+bind -t vi-copy 'Bspace' halfpage-up
+# Open new pane in same path
+unbind c
+bind c new-window -c '#{pane_current_path}'
+
+# soften status bar color from harsh green to light gray
+set -g status-bg '#666666'
+set -g status-fg '#aaaaaa'
+
+# Screen like binding for last window
+unbind l
+bind C-a last-window
+
+# Bigger history
+set -g history-limit 10000
+#
