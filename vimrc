@@ -158,7 +158,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'thinca/vim-quickrun'
 
 " Don't touch sign column
-let g:gitgutter_override_sign_column_highlight = 0
+" let g:gitgutter_override_sign_column_highlight = 0
 Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
 
 Plug 'tpope/vim-fugitive'
@@ -179,8 +179,6 @@ Plug 'tpope/vim-repeat'
 Plug 'scrooloose/syntastic'
   let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
   let g:syntastic_javascript_checkers = ['eslint']
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
   let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
 
