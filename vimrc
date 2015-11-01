@@ -19,6 +19,9 @@ set t_Co=256                   " 256 colors terminal
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
 set showcmd
+
+set shortmess=a
+
 " Turn off beeping
 set noerrorbells visualbell t_vb=
 if has('autocmd')
@@ -175,9 +178,11 @@ Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/syntastic'
   let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
-  let g:syntastic_javascript_checkers = ['jshint']
-"  let g:syntastic_jsx_checkers = ['jsxhint']		
-"  let g:syntastic_jsx_jsxhint_args = ['--babel']
+  let g:syntastic_javascript_checkers = ['eslint']
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_wq = 0
 
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
@@ -213,11 +218,14 @@ Plug 'Shougo/unite.vim'
   nnoremap [unite]/ :Ag <c-r>=expand("<cword>")<cr><cr>
 
 " Javascript goodies
-Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
-  Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
-  autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
-  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+Plug 'millermedeiros/vim-esformatter', {'for': ['javascript', 'html', 'css']}
+" Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
+"   Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
+nnoremap <silent> <c-f> :Esformatter<CR>
+vnoremap <silent> <c-f> :EsformatterVisual<CR>
+  " autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
+  " autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+  " autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 Plug 'moll/vim-node', {'for': ['javascript']}
   autocmd FileType javascript map <buffer> gf <Plug>NodeGotoFile
@@ -277,6 +285,10 @@ function! <SID>StripTrailingWhitespaces()
     let @/=_s
     call cursor(l, c)
 endfunction
+
+command! -nargs=1 S
+      \ | execute ':silent !git checkout '.<q-args>
+      \ | execute ':redraw!'
 
 command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap <Leader>w :StripTrailingWhitespaces<CR>
