@@ -21,7 +21,12 @@ bindkey -M vicmd v edit-command-line
 # update package version, push to GitHub and publish to npm
 vv() { npm version $* && git push && git push --tags && npm publish; }
 
-# Edit all modified files
-gim(){
-  vim `git ls-files -m` -p
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fe() {
+  local file
+  file=$(fzf --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
 }
+
