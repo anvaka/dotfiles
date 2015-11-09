@@ -29,7 +29,10 @@ if has('autocmd')
 endif
 
 set encoding=utf-8
-set term=xterm-256color
+if !has('nvim')
+  set term=xterm-256color
+endif
+
 set t_ut=                      " Disable backgroun color erase, play nicely with tmux
 set termencoding=utf-8
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
@@ -91,7 +94,8 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
 " =============== Basic keyboard shortcuts =============
-let mapleader=","             " Leader key to a comma
+let mapleader=' '             " Leader key to a comma
+let maplocalleader = ' '
 nnoremap Y y$                 " Make Y consistent with C and D
 nnoremap <unique> <CR> :w<CR> " Save files with Enter key in normal mode
 
@@ -149,12 +153,11 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFind' }
   " If nerd tree is the last window - quit
   autocmd bufenter * if (winnr("$") == 1 && exists('b:NERDTreeType') && b:NERDTreeType == "primary") | q | endif
 
-Plug 'rking/ag.vim'
-Plug 'ctrlpvim/ctrlp.vim'
-  let g:ctrlp_max_files=0
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 0
+" Faster large files
+Plug 'mhinz/vim-hugefile'
+  let g:hugefile_trigger_size=2
 
+Plug 'rking/ag.vim'
 Plug 'thinca/vim-quickrun'
 
 " Don't touch sign column
@@ -182,6 +185,12 @@ Plug 'scrooloose/syntastic'
   let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
 
+if has('nvim')
+  imap <c-x><c-k> <plug>(fzf-complete-word)
+  imap <c-x><c-f> <plug>(fzf-complete-path)
+  imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+  imap <c-x><c-l> <plug>(fzf-complete-line)
+else
 Plug 'SirVer/ultisnips'
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
   Plug 'honza/vim-snippets'
@@ -192,28 +201,69 @@ Plug 'SirVer/ultisnips'
   let g:UltiSnipsExpandTrigger="<tab>"
   let g:UltiSnipsJumpForwardTrigger="<tab>"
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+endif
+
+" ----------------------------------------------------------------------------
+" <tab> / <s-tab> / <c-v><tab> | super-duper-tab
+" ----------------------------------------------------------------------------
+function! s:can_complete(func, prefix)
+  if empty(a:func) || call(a:func, [1, '']) < 0
+    return 0
+  endif
+  let result = call(a:func, [0, matchstr(a:prefix, '\k\+$')])
+  return !empty(type(result) == type([]) ? result : result.words)
+endfunction
+
+function! s:super_duper_tab(k, o)
+  if pumvisible()
+    return a:k
+  endif
+
+  let line = getline('.')
+  let col = col('.') - 2
+  if line[col] !~ '\k\|[/~.]'
+    return a:o
+  endif
+
+  let prefix = expand(matchstr(line[0:col], '\S*$'))
+  if prefix =~ '^[~/.]'
+    return "\<c-x>\<c-f>"
+  endif
+  if s:can_complete(&omnifunc, prefix)
+    return "\<c-x>\<c-o>"
+  endif
+  if s:can_complete(&completefunc, prefix)
+    return "\<c-x>\<c-u>"
+  endif
+  return a:k
+endfunction
+
+if has_key(g:plugs, 'ultisnips')
+  " UltiSnips will be loaded only when tab is first pressed in insert mode
+  if !exists(':UltiSnipsEdit')
+    inoremap <silent> <Plug>(tab) <c-r>=plug#load('ultisnips')?UltiSnips#ExpandSnippet():''<cr>
+    imap <tab> <Plug>(tab)
+  endif
+
+  let g:SuperTabMappingForward  = "<tab>"
+  let g:SuperTabMappingBackward = "<s-tab>"
+  function! SuperTab(m)
+    return s:super_duper_tab(a:m == 'n' ? "\<c-n>" : "\<c-p>",
+                           \ a:m == 'n' ? "\<tab>" : "\<s-tab>")
+  endfunction
+else
+  inoremap <expr> <tab>   <SID>super_duper_tab("\<c-n>", "\<tab>")
+  inoremap <expr> <s-tab> <SID>super_duper_tab("\<c-p>", "\<s-tab>")
+endif
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+  nnoremap <silent> <Leader><Leader> :Files<CR>
+  nnoremap <silent> <Leader><Enter>  :Buffers<CR>
+  nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+  nnoremap <silent> <Leader>b        :History<CR>
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Shougo/unite.vim'
-  function! s:unite_settings()
-    nmap <buffer> Q <plug>(unite_exit)
-    nmap <buffer> <esc> <plug>(unite_exit)
-    imap <buffer> <esc> <plug>(unite_exit)
-  endfunction
-  autocmd FileType unite call s:unite_settings()
-  let g:unite_source_history_yank_enable=1
-  nmap <space> [unite]
-  nnoremap [unite] <nop>
-  try
-    let g:unite_source_rec_async_command='ag --nocolor --ignore "node_modules/" --nogroup -g ""'
-    call unite#filters#matcher_default#use(['matcher_fuzzy'])
-  catch
-  endtry
-  " search a file in the filetree
-  nnoremap [unite]<space> :<C-u>Unite -start-insert file_rec/async<cr>
-  nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
-  nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-  nnoremap [unite]/ :Ag <c-r>=expand("<cword>")<cr><cr>
 
 " Javascript goodies
 Plug 'millermedeiros/vim-esformatter', {'for': ['javascript', 'html', 'css']}
