@@ -257,6 +257,7 @@ Plug 'junegunn/fzf.vim'
   nnoremap <silent> <Leader>b        :History<CR>
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'leafgarland/typescript-vim'
 
 " Javascript goodies
 Plug 'millermedeiros/vim-esformatter', {'for': ['javascript', 'html', 'css']}
