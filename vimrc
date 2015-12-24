@@ -33,7 +33,7 @@ if !has('nvim')
   set term=xterm-256color
 endif
 
-set t_ut=                      " Disable backgroun color erase, play nicely with tmux
+set t_ut=                      " Disable background color erase, play nicely with tmux
 set termencoding=utf-8
 set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
 
@@ -71,7 +71,7 @@ set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
 set wildmode=list:longest
-set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+set wildmenu                "enable ctrl-n and ctrl-p to scroll through matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -88,7 +88,7 @@ set undofile
 
 " ================ Search Settings  =================
 set incsearch       " Find the next match as we type the search
-set hlsearch        " Hilight searches by default
+set hlsearch        " Highlight searches by default
 set viminfo='100,f1 " Save up to 100 marks, enable capital marks
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
@@ -138,7 +138,7 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 nnoremap <silent> <Leader>q :bn \| bd #<CR> " Kill current buffer without closing split
 
-" ================== Install Plguins ============
+" ================== Install Plugins ============
 let s:first_time_launch = 0
 if empty(glob("~/.vim/autoload/plug.vim"))
     silent execute '!mkdir -p ~/.vim/autoload'
@@ -259,7 +259,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'leafgarland/typescript-vim'
 
-" Javascript goodies
+" JavaScript goodies
 Plug 'millermedeiros/vim-esformatter', {'for': ['javascript', 'html', 'css']}
 " Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
 "   Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
