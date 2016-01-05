@@ -98,6 +98,7 @@ let mapleader=' '             " Leader key to a comma
 let maplocalleader = ' '
 nnoremap Y y$                 " Make Y consistent with C and D
 nnoremap <unique> <CR> :w<CR> " Save files with Enter key in normal mode
+au FileType qf nnoremap <buffer> <Enter> <Enter> " Don't apply <CR> in quickfix
 
 " Move between panes easier
 nnoremap <silent> <C-h> <C-w>h
