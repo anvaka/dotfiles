@@ -1,9 +1,8 @@
 {
-  "libs": [
-      "browser",
-      "ecma5"
-  ],
+  "libs": [ "browser", "ecma6" ],
   "plugins": {
-    "node": {}
+    "node": {},
+    "complete_strings": {},
+    "es_modules": {}
   }
 }
