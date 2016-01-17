@@ -262,14 +262,14 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'leafgarland/typescript-vim'
 
 " JavaScript goodies
-Plug 'millermedeiros/vim-esformatter', {'for': ['javascript', 'html', 'css']}
-" Plug 'maksimr/vim-jsbeautify', {'for': ['javascript', 'html', 'css']}
-"   Plug 'einars/js-beautify', {'for': ['javascript', 'html', 'css']}
-nnoremap <silent> <c-f> :Esformatter<CR>
-vnoremap <silent> <c-f> :EsformatterVisual<CR>
-  " autocmd FileType javascript nmap <buffer> <c-f> :call JsBeautify()<cr>
-  " autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-  " autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+Plug 'millermedeiros/vim-esformatter', {'for': ['javascript']}
+Plug 'maksimr/vim-jsbeautify', {'for': ['html', 'css']}
+   Plug 'einars/js-beautify', {'for': ['html', 'css']}
+
+autocmd FileType javascript nmap <silent> <c-f> :Esformatter<CR>
+autocmd FileType javascript vnoremap <silent> <c-f> :EsformatterVisual<CR>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 Plug 'moll/vim-node', {'for': ['javascript']}
   autocmd FileType javascript map <buffer> gf <Plug>NodeGotoFile
