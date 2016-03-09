@@ -162,6 +162,10 @@ Plug 'mhinz/vim-hugefile'
 Plug 'rking/ag.vim'
 Plug 'thinca/vim-quickrun'
 
+Plug 'editorconfig/editorconfig-vim'
+Plug 'posva/vim-vue'
+
+
 " Don't touch sign column
 " let g:gitgutter_override_sign_column_highlight = 0
 Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
