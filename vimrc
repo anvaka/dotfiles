@@ -164,6 +164,10 @@ Plug 'thinca/vim-quickrun'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'posva/vim-vue'
+Plug 'wavded/vim-stylus'
+
+" Handle gyp files
+Plug 'kelan/gyp.vim'
 
 
 " Don't touch sign column
