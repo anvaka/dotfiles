@@ -11,6 +11,9 @@ bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
 
+# Use vim as pager
+export MANPAGER="env MAN_PN=1 vim -M +MANPAGER -"
+
 # Kill timeout
 export KEYTIMEOUT=1
 
