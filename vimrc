@@ -101,6 +101,15 @@ nnoremap Y y$                 " Make Y consistent with C and D
 " Save files with Enter key in normal mode
 nnoremap <unique> <expr> <CR> empty(&buftype) ? ':w<CR>' : '<CR>'
 
+" Use Tab to switch buffer
+nnoremap <Tab> :bn<CR>
+nnoremap <S-Tab> :bp<CR>
+
+" <Leader>b[1-9] move to buffer [1-9]
+for s:i in range(1, 9)
+    execute 'nnoremap <Leader>b' . s:i . ' :b' . s:i . '<CR>'
+endfor
+
 " Move between panes easier
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-l> <C-w>l
