@@ -9,13 +9,11 @@ set backspace=indent,eol,start
 syntax on                      " Turn on syntax highlighting
 set hidden                     " Allow buffer switching without saving
 set history=1000               " Number of command lines to remember
-set list                       " Highlight whitespace
 set foldlevel=99               " Always unfold
 set colorcolumn=80             " Visual guideline at column 80
 set cursorline                 " Highlight current line
-set clipboard=unnamed          " give me my system clipboard
+set clipboard=unnamedplus      " use system clipboard
 set laststatus=0               " Never show the statusline
-set t_Co=256                   " 256 colors terminal
 set ttimeoutlen=50             " Reduce annoying delay for key codes, especially <Esc>..."
 set number                     " Always show line numbers
 set showcmd
@@ -28,14 +26,15 @@ if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
 
-set encoding=utf-8
-if !has('nvim')
-  set term=xterm-256color
-endif
+" Auto-reload files changed outside of Vim
+augroup AutoReadCheck
+  autocmd!
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !=# 'c' | checktime | endif
+augroup END
 
-set t_ut=                      " Disable background color erase, play nicely with tmux
-set termencoding=utf-8
-set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
+set encoding=utf-8
+set termguicolors              " truecolor in supported terminals
+
 
 " ================ Turn Off Swap Files ==============
 set noswapfile
@@ -62,7 +61,6 @@ set linebreak
 let &showbreak='↪ '
 
 set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
 
 " ================ Folds ============================
 set foldmethod=manual   "fold based on indent
@@ -72,6 +70,7 @@ set nofoldenable        "dont fold by default
 " ================ Completion =======================
 set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll through matches
+set completeopt=menuone,noselect   " modern popup menu behavior
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -82,8 +81,8 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
-silent !mkdir ~/.vim/backups > /dev/null 2>&1
 set undodir=~/.vim/backups
+call mkdir(expand(&undodir), 'p')
 set undofile
 
 " ================ Search Settings  =================
@@ -94,7 +93,7 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
 " =============== Basic keyboard shortcuts =============
-let mapleader=' '             " Leader key to a comma
+let mapleader=' '             " Leader key is space
 let maplocalleader = ' '
 nnoremap Y y$                 " Make Y consistent with C and D
 
@@ -139,11 +138,6 @@ imap <F6> <C-O>:set paste<CR>
 " Open current file with ,o
 nnoremap <Leader>o :!open '%'\<CR>\<CR>
 
-" npm install --save-dev word under cursor
-nnoremap <Leader>t :execute ":!npm install --save-dev " . expand("<cword>")<CR>
-" npm install --save word under cursor
-nnoremap <Leader>s :execute ":!npm install --save " . expand("<cword>")<CR>
-
 " Search and replace the word under the cursor
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
@@ -164,27 +158,21 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFind' }
   " If nerd tree is the last window - quit
   autocmd bufenter * if (winnr("$") == 1 && exists('b:NERDTreeType') && b:NERDTreeType == "primary") | q | endif
 
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+
 " Faster large files
 Plug 'mhinz/vim-hugefile'
   let g:hugefile_trigger_size=2
 
-Plug 'rking/ag.vim'
-Plug 'thinca/vim-quickrun'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'posva/vim-vue'
-Plug 'wavded/vim-stylus'
-
-" Handle gyp files
-Plug 'kelan/gyp.vim'
-
 
 " Don't touch sign column
-" let g:gitgutter_override_sign_column_highlight = 0
 Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
 
 Plug 'tpope/vim-fugitive'
-  nnoremap <silent> <leader>gs :Gstatus<CR>
+  nnoremap <silent> <leader>gs :Git<CR>
   nnoremap <silent> <leader>gd :Gdiff<CR>
   nnoremap <silent> <leader>gc :Gcommit<CR>
   nnoremap <silent> <leader>gb :Gblame<CR>
@@ -198,22 +186,25 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
-Plug 'scrooloose/syntastic'
-  let g:syntastic_mode_map = {'mode': 'active','active_filetypes': ['js'], 'passive_filetypes': ['html'] }
-  let g:syntastic_javascript_checkers = ['eslint']
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_wq = 0
-
-Plug 'SirVer/ultisnips'
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
-  Plug 'honza/vim-snippets'
-  Plug 'anvaka/snip5'
-  let g:ycm_complete_in_comments_and_strings=1
-  let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-  let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
-  let g:UltiSnipsExpandTrigger="<tab>"
-  let g:UltiSnipsJumpForwardTrigger="<tab>"
-  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+Plug 'dense-analysis/ale'
+  let g:ale_linters = {
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['tsserver', 'eslint'],
+  \ 'vue': ['eslint'],
+  \ }
+  let g:ale_fixers = {
+  \ '*': ['trim_whitespace'],
+  \ 'javascript': ['prettier', 'eslint'],
+  \ 'typescript': ['prettier', 'eslint'],
+  \ 'vue': ['prettier', 'eslint'],
+  \ }
+  let g:ale_fix_on_save = 0
+  let g:ale_lint_on_text_changed = 'normal'
+  let g:ale_lint_on_insert_leave = 1
+  let g:ale_open_list = 0
+  let g:ale_set_quickfix = 0
+  set signcolumn=yes
+  set updatetime=300
 
 " ----------------------------------------------------------------------------
 " <tab> / <s-tab> / <c-v><tab> | super-duper-tab
@@ -272,45 +263,27 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
   nnoremap <silent> <Leader><Leader> :Files<CR>
   nnoremap <silent> <Leader><Enter>  :Buffers<CR>
-  nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+  nnoremap <silent> <Leader>rg       :Rg <C-R><C-W><CR>
   nnoremap <silent> <Leader>b        :History<CR>
 
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'leafgarland/typescript-vim'
-
-" JavaScript goodies
-Plug 'millermedeiros/vim-esformatter', {'for': ['javascript']}
-Plug 'maksimr/vim-jsbeautify', {'for': ['html', 'css']}
-   Plug 'einars/js-beautify', {'for': ['html', 'css']}
-
-autocmd FileType javascript nmap <silent> <c-f> :Esformatter<CR>
-autocmd FileType javascript vnoremap <silent> <c-f> :EsformatterVisual<CR>
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-
-Plug 'moll/vim-node', {'for': ['javascript']}
-  autocmd FileType javascript map <buffer> gf <Plug>NodeGotoFile
 
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
-  let g:tern_show_signature_in_pum = 1
-  let g:tern_show_argument_hints = 'on_hold'
-  set completeopt-=preview
-  autocmd FileType javascript map <buffer> gd :TernDef<CR>
+  " Use ALE for JS/TS/Vue navigation and hover
+  augroup AleJsNav
+    autocmd!
+    autocmd FileType javascript,typescript,vue nnoremap <buffer> gd :ALEGoToDefinition<CR>
+    autocmd FileType javascript,typescript,vue nnoremap <buffer> K  :ALEHover<CR>
+  augroup END
 
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-function'
 Plug 'kana/vim-textobj-entire'
 Plug 'thinca/vim-textobj-function-javascript', { 'for': 'javascript' }
-Plug 'aming/vim-mason', { 'for': 'mason' }
-  au BufNewFile,BufRead *.m set ft=mason
-  au BufNewFile,BufRead *.mi set ft=mason
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'groenewege/vim-less', { 'for': 'less' }
-Plug 'briancollins/vim-jst'
 
 filetype plugin indent on
 call plug#end()
