@@ -61,6 +61,7 @@ set linebreak
 let &showbreak='↪ '
 
 set nowrap       "Don't wrap lines
+" set linebreak    "Wrap lines at convenient points
 
 " ================ Folds ============================
 set foldmethod=manual   "fold based on indent
@@ -164,11 +165,17 @@ Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'mhinz/vim-hugefile'
   let g:hugefile_trigger_size=2
 
+" (removed) thinca/vim-quickrun
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'posva/vim-vue'
+" (removed) wavded/vim-stylus
+
+" (removed) kelan/gyp.vim
+
 
 " Don't touch sign column
+" let g:gitgutter_override_sign_column_highlight = 0
 Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
 
 Plug 'tpope/vim-fugitive'
@@ -205,6 +212,17 @@ Plug 'dense-analysis/ale'
   let g:ale_set_quickfix = 0
   set signcolumn=yes
   set updatetime=300
+
+" Plug 'SirVer/ultisnips'
+"   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+"   Plug 'honza/vim-snippets'
+"   Plug 'anvaka/snip5'
+"   let g:ycm_complete_in_comments_and_strings=1
+"   let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+"   let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+"   let g:UltiSnipsExpandTrigger="<tab>"
+"   let g:UltiSnipsJumpForwardTrigger="<tab>"
+"   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " ----------------------------------------------------------------------------
 " <tab> / <s-tab> / <c-v><tab> | super-duper-tab
@@ -268,6 +286,10 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'leafgarland/typescript-vim'
 
+" (removed) legacy JS/HTML/CSS formatters and mappings (use ALE+Prettier)
+
+" (removed) moll/vim-node
+
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -282,8 +304,10 @@ Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-function'
 Plug 'kana/vim-textobj-entire'
 Plug 'thinca/vim-textobj-function-javascript', { 'for': 'javascript' }
+" (removed) vim-mason
 
 Plug 'altercation/vim-colors-solarized'
+" (removed) vim-less and vim-jst
 
 filetype plugin indent on
 call plug#end()

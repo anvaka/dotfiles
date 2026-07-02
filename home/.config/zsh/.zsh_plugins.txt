@@ -1,0 +1,15 @@
+# Modern zsh plugins — loaded by antidote (https://antidote.sh)
+# Order matters: fzf-tab must load before plugins that wrap ZLE widgets.
+
+# Preserve your Oh-My-Zsh git aliases (gst, gco, gp, gd, ...) without the OMZ overhead
+ohmyzsh/ohmyzsh path:lib/git.zsh
+ohmyzsh/ohmyzsh path:plugins/git
+
+# Fuzzy tab-completion UI (uses fzf)
+Aloxaf/fzf-tab
+
+# Gray inline suggestions from history (press → / End to accept)
+zsh-users/zsh-autosuggestions
+
+# Syntax highlighting as you type — must be loaded LAST
+zdharma-continuum/fast-syntax-highlighting

@@ -1,0 +1,30 @@
+# Ghostty config — ~/.config/ghostty/config
+# Reload in-app with Cmd+Shift+, ; see all options with: ghostty +show-config --default
+
+# --- Font (Hack Nerd Font is already installed; gives icons for starship/eza) ---
+font-family = "Hack Nerd Font Mono"
+font-size = 14
+font-thicken = true
+
+# --- Theme (matches the Catppuccin Mocha starship prompt) ---
+# theme = Catppuccin Mocha
+background-opacity = 0.96
+background-blur = 20
+
+# --- Cursor ---
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+# --- Window ---
+window-padding-x = 12
+window-padding-y = 10
+window-save-state = always
+macos-titlebar-style = transparent
+macos-option-as-alt = true
+
+# --- Behavior ---
+copy-on-select = clipboard
+confirm-close-surface = false
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title

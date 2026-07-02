@@ -1,0 +1,13 @@
+# Secrets — real values live at ~/.config/zsh/secrets.zsh (chmod 600), never here.
+secrets.zsh
+home/.config/zsh/secrets.zsh
+
+# Generated / machine-local zsh artifacts (regenerated on first shell start)
+.zcompdump*
+*.zwc
+home/.config/zsh/.zsh_plugins.zsh
+home/.zsh_history
+home/.zsh_sessions/
+
+# macOS cruft
+.DS_Store
